@@ -5,6 +5,12 @@ on:
   # Triggers on pushes in the default branch
   push:
     branches: ["main"]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/deploy.yml"
 
 env:
   NODE_VERSION: '16.x' # the node version to use
