@@ -1,5 +1,6 @@
 {
   "name": "blockexplorer",
+  "homepage": "https://riccardobiffi.github.io/AU-w3-blockexplorer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
