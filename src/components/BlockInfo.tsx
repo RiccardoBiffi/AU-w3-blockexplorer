@@ -41,13 +41,16 @@ export default function BlockInfo(props: { n: number }) {
           Parent Hash: {block?.parentHash}
         </Typography>
         <Typography variant="body2">
-          Timestamp: {block?.timestamp}
+          Timestamp: {block?.timestamp ? new Date(block?.timestamp * 1000).toLocaleString() : ""}
         </Typography>
         <Typography variant="body2">
           Nonce: {Number(block?.nonce)}
         </Typography>
         <Typography variant="body2">
           Miner: {block?.miner}
+        </Typography>
+        <Typography variant="body2">
+          Transactions: {block?.transactions.length}
         </Typography>
         <Typography variant="body2">
           Gas Used: {Number(block?.gasUsed)} ({(Number(block?.gasUsed) / Number(block?.gasLimit) * 100).toFixed(2)}%)
