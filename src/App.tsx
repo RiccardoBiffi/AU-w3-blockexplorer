@@ -20,7 +20,7 @@ const settings = {
 const alchemy = new Alchemy(settings);
 
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
+  const [blockNumber, setBlockNumber] = useState<number | null>();
 
   useEffect(() => {
     async function getBlockNumber() {
