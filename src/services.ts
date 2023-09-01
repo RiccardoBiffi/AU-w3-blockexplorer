@@ -2,22 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySettings } from './contexts/AlchemySettings';
 
-export function useBlock(blockNumber: number) : Block | null {
-    const settings = useContext(AlchemySettings);
-    const [block, setBlock] = useState<Block | null>(null);
-
-    useEffect(() => {
-        const alchemy = new Alchemy(settings);
-        async function getBlock() {
-            if (blockNumber === 0) return;
-            setBlock(await alchemy.core.getBlock(blockNumber));
-        }
-      
-        getBlock();
-    }, [blockNumber, settings]);
-
-    return block;
-}
 
 export function useLatestBlock() : number | null {
     const {apiKey, network} = useContext(AlchemySettings);
@@ -35,18 +19,35 @@ export function useLatestBlock() : number | null {
     return lastBlockNumber;
 }
 
+export function useBlock(blockNumber: number) : Block | null {
+    const {apiKey, network} = useContext(AlchemySettings);
+    const [block, setBlock] = useState<Block | null>(null);
+
+    useEffect(() => {
+        const alchemy = new Alchemy({apiKey, network});
+        async function getBlock() {
+            if (blockNumber === 0) return;
+            setBlock(await alchemy.core.getBlock(blockNumber));
+        }
+      
+        getBlock();
+    }, [blockNumber, apiKey, network]);
+
+    return block;
+}
+
 export function useTransactions(blockNumber: number) : TransactionResponse[] | null {
-    const settings = useContext(AlchemySettings);
+    const {apiKey, network} = useContext(AlchemySettings);
     const [transactions, setTransactions] = useState<TransactionResponse[] | null>(null);
 
     useEffect(() => {
-        const alchemy = new Alchemy(settings);
+        const alchemy = new Alchemy({apiKey, network});
         async function getTransactions() {
             setTransactions((await alchemy.core.getBlockWithTransactions(blockNumber)).transactions);
         }
       
         getTransactions();
-    }, [blockNumber, settings]);
+    }, [blockNumber, apiKey, network]);
 
     return transactions;
 }

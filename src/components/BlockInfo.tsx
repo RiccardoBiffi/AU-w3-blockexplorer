@@ -1,8 +1,9 @@
-import { useBlock } from '../services';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
+import { useBlock } from '../services';
+import { Hash } from './fields/Hash';
 
 
 export default function BlockInfo(
@@ -44,19 +45,19 @@ export default function BlockInfo(
         >
         <BlockCardContent>
           <Typography variant="h5" component="div">
-            Block Number: {block?.number}
+            Block {block?.number}
           </Typography>
           <Typography variant="body2">
-            Hash: {block?.hash}
+            Hash <Hash hash={block?.hash}/>
           </Typography>
           <Typography variant="body2">
-            Parent Hash: {block?.parentHash}
+            Parent Hash <Hash hash={block?.parentHash}/>
           </Typography>
           <Typography variant="body2">
             Timestamp: {block?.timestamp ? new Date(block?.timestamp * 1000).toLocaleString() : ""}
           </Typography>
           <Typography variant="body2">
-            Miner: {block?.miner}
+            Miner <Hash hash={block?.miner} />
           </Typography>
           <Typography variant="body2">
             Transactions: {block?.transactions.length}
