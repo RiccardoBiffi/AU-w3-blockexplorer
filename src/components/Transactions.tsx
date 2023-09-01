@@ -16,7 +16,7 @@ export default function Transactions({blockNumber}:{ blockNumber: number }) {
 
   return (
     <>
-        {transactionsArray ? transactionsArray : "No transactions"}
+        {transactionsArray ? transactionsArray : "Loading transactions..."}
     </>
   );
 }
