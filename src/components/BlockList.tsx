@@ -10,7 +10,7 @@ export default function BlockList({latestBlock}: {latestBlock : number | null}) 
         setSelectedBlock(n);
     }
 
-    const blockListArray = new Array(10).fill(0).map((_, i) => {
+    const blockListArray = new Array(2).fill(0).map((_, i) => {
         const block = latestBlock ? latestBlock - i : 0
         return (
             <BlockInfo
@@ -25,7 +25,7 @@ export default function BlockList({latestBlock}: {latestBlock : number | null}) 
     return (
         <>
             {blockListArray}
-            {selectedBlock && <Transactions blockNumber={selectedBlock} />}
+            {selectedBlock && <Transactions key={selectedBlock} blockNumber={selectedBlock} />}
         </>
     );
 }
