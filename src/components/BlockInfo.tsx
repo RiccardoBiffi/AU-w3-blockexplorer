@@ -28,12 +28,9 @@ export default function BlockInfo(
   `
 
   const BlockCardContent = styled(CardContent)`
-    padding: 32px;
     background-color: ${() => (isSelected ? '#DDDDDD' : '#EEEEEE')};
-    font-size: 24px;
+    border: ${() => (isSelected ? '1px solid lightsteelblue' : 'inherit')};
     border-radius: 4px;
-    color: black;
-
   `
 
   return (
@@ -48,16 +45,16 @@ export default function BlockInfo(
             Block {block?.number}
           </Typography>
           <Typography variant="body2">
-            Hash <Hash hash={block?.hash}/>
+            Hash: <Hash hash={block?.hash}/>
           </Typography>
           <Typography variant="body2">
-            Parent Hash <Hash hash={block?.parentHash}/>
+            Parent: <Hash hash={block?.parentHash}/>
           </Typography>
           <Typography variant="body2">
             Timestamp: {block?.timestamp ? new Date(block?.timestamp * 1000).toLocaleString() : ""}
           </Typography>
           <Typography variant="body2">
-            Miner <Hash hash={block?.miner} />
+            Miner: <Hash hash={block?.miner} />
           </Typography>
           <Typography variant="body2">
             Transactions: {block?.transactions.length}
