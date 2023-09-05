@@ -30,7 +30,6 @@ export default function BlockList({latestBlock}: {latestBlock : number | null}) 
 
     return (
         <>
-            <h1>Ethereum last 3 blocks</h1>
             <Stack direction="row-reverse"
                 divider={<Divider><Icon icon={faArrowRight}/></Divider>}
                 spacing={2}

@@ -13,6 +13,8 @@ function App() {
 
   return (
     <Container maxWidth="lg">
+      <h1>Ethereum last 3 blocks</h1> {/*todo add refresh button*/}
+      <p>Click on a block to see its transactions</p>
       <BlockList latestBlock={latestBlock} />
     </Container>
     );
