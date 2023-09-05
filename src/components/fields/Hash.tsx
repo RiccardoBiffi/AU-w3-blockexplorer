@@ -1,7 +1,8 @@
 
 import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+
 
 export function Hash({hash}:{ hash: string | undefined }) {
     const reducedHash = hash?.slice(0, 6) + "..." + hash?.slice(-4);
@@ -12,10 +13,11 @@ export function Hash({hash}:{ hash: string | undefined }) {
 
     return (
         <>  
-            {reducedHash}&nbsp;
+            <span title={hash}>{reducedHash}&nbsp;</span>
             <Icon
                 icon={faCopy}
-                onClick={() => {
+                onClick={(event) => {
+                    event.stopPropagation();
                     if(hash)
                         navigator.clipboard.writeText(hash)
                     }

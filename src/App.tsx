@@ -1,5 +1,6 @@
 import BlockList from './components/BlockList';
 import { useLatestBlock } from './services';
+import { Container } from '@mui/material';
 
 
 import './App.css';
@@ -11,7 +12,9 @@ function App() {
   const latestBlock = useLatestBlock();
 
   return (
+    <Container maxWidth="lg">
       <BlockList latestBlock={latestBlock} />
+    </Container>
     );
 }
 
