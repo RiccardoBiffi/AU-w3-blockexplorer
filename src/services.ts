@@ -3,9 +3,14 @@ import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySettings } from './contexts/AlchemySettings';
 
 
-export function useLatestBlock() : number | null {
+export function useLatestBlock(isRefresh: boolean) : [number | null, () => void] {
     const {apiKey, network} = useContext(AlchemySettings);
     const [lastBlockNumber, setLastBlockNumber] = useState<number | null>(null);
+    const [refresh, setRefresh] = useState<boolean>(isRefresh);
+
+    function handleRefresh() {
+        setRefresh(!refresh);
+    }
 
     useEffect(() => {   
         const alchemy = new Alchemy({apiKey, network});
@@ -14,9 +19,9 @@ export function useLatestBlock() : number | null {
         }
       
         getBlock();
-    }, [apiKey, network]);
+    }, [apiKey, network, refresh]);
 
-    return lastBlockNumber;
+    return [lastBlockNumber, handleRefresh];
 }
 
 export function useBlock(blockNumber: number) : Block | null {
