@@ -35,7 +35,7 @@ export default function BlockList({latestBlock}: {latestBlock : number | null}) 
                 spacing={2}
                 justifyContent="center"
                 alignItems="center"
-                my={2}
+                my={4}
                 >
                 {blockListArray}
             </Stack>

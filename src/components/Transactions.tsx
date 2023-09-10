@@ -10,7 +10,6 @@ export default function Transactions({blockNumber}:{ blockNumber: number }) {
       return {
         id: t.hash,
         hash: t.hash,
-        status: t.timestamp ? "Mined" : "Pending",
         from: t.from,
         to: t.to,
         value: Utils.formatEther(t.value.toString()) + " ETH",
@@ -22,7 +21,6 @@ export default function Transactions({blockNumber}:{ blockNumber: number }) {
 
   const columns : GridColDef[] = [
     { field: 'hash', headerName: 'Hash', width: 150 },
-    { field: 'status', headerName: 'Status', width: 100 },
     { field: 'from', headerName: 'From', width:  150 },
     { field: 'to', headerName: 'To', width: 150 },
     { field: 'value', headerName: 'Value sent', width: 250 },
