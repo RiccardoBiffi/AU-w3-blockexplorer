@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySettings } from './contexts/AlchemySettings';
 import { BlockContext } from './contexts/BlockContext';
