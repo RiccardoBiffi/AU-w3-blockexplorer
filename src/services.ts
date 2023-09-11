@@ -1,6 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySettings } from './contexts/AlchemySettings';
+import { BlockContext } from './contexts/BlockContext';
+import { TransactionContext } from './contexts/TransactionContext';
 
 
 export function useLatestBlock(isRefresh: boolean) : [number | null, () => void] {
@@ -26,33 +28,46 @@ export function useLatestBlock(isRefresh: boolean) : [number | null, () => void]
 
 export function useBlock(blockNumber: number) : Block | null {
     const {apiKey, network} = useContext(AlchemySettings);
+    const blockMap = useContext(BlockContext);
     const [block, setBlock] = useState<Block | null>(null);
 
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getBlock() {
             if (blockNumber === 0) return;
-            setBlock(await alchemy.core.getBlock(blockNumber));
+            if (blockMap.has(blockNumber))
+                return setBlock(blockMap.get(blockNumber) as Block);
+
+            const fetchedBlock = await alchemy.core.getBlock(blockNumber);
+            blockMap.set(blockNumber, fetchedBlock);
+            setBlock(fetchedBlock);
         }
       
         getBlock();
-    }, [blockNumber, apiKey, network]);
+    }, [blockNumber, apiKey, network, blockMap]);
 
     return block;
 }
 
 export function useTransactions(blockNumber: number) : TransactionResponse[] | null {
     const {apiKey, network} = useContext(AlchemySettings);
+    const transactionContext = useContext(TransactionContext);
     const [transactions, setTransactions] = useState<TransactionResponse[] | null>(null);
 
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getTransactions() {
-            setTransactions((await alchemy.core.getBlockWithTransactions(blockNumber)).transactions);
+            if (blockNumber === 0) return;
+            if (transactionContext.has(blockNumber))
+                return setTransactions(transactionContext.get(blockNumber) as TransactionResponse[]);
+            
+            const fetchedTransactions = (await alchemy.core.getBlockWithTransactions(blockNumber)).transactions;
+            transactionContext.set(blockNumber, fetchedTransactions);
+            setTransactions(fetchedTransactions);
         }
       
         getTransactions();
-    }, [blockNumber, apiKey, network]);
+    }, [blockNumber, apiKey, network, transactionContext]);
 
     return transactions;
 }
