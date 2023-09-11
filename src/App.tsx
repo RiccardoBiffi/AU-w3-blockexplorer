@@ -13,6 +13,7 @@ import styled from '@emotion/styled';
 
 function App() {
   const [latestBlock, handleRefresh] = useLatestBlock(false);
+  const blockNumber = 10;
 
   const Icon = styled(FontAwesomeIcon)`
     cursor: pointer;
@@ -25,11 +26,11 @@ function App() {
 
   return (
     <Container maxWidth="lg">
-      <h1>Ethereum last 3 blocks&nbsp;
+      <h1>Ethereum last {blockNumber} blocks&nbsp;
         <Icon title="Click to refresh" onClick={handleRefresh} icon={faRefresh}/>
       </h1>
       <p>Click on a block to see its transactions</p>
-      <BlockList latestBlock={latestBlock} />
+      <BlockList latestBlock={latestBlock} number={blockNumber} />
     </Container>
     );
 }
