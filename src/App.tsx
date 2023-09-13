@@ -1,6 +1,6 @@
 import BlockList from './components/BlockList';
 import { useLatestBlock } from './services';
-import { Container } from '@mui/material';
+import { Box, Container, Tab, Tabs } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,6 +26,13 @@ function App() {
 
   return (
     <Container maxWidth="lg">
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs aria-label="basic tabs example" centered>
+          <Tab label="Latest" />
+          <Tab label="Search" />
+          <Tab label="NFTs" />
+        </Tabs>
+      </Box>
       <h1>Ethereum last {blockNumber} blocks&nbsp;
         <Icon title="Click to refresh" onClick={handleRefresh} icon={faRefresh}/>
       </h1>
