@@ -29,6 +29,7 @@ export function useLatestBlock(isRefresh: boolean) : [number | null, () => void]
 export function useBlock(blockNumber: number) : Block | null {
     const {apiKey, network} = useContext(AlchemySettings);
     const blockMap = useContext(BlockContext);
+    const transactionContext = useContext(TransactionContext);
     const [block, setBlock] = useState<Block | null>(null);
 
     useEffect(() => {
@@ -40,11 +41,17 @@ export function useBlock(blockNumber: number) : Block | null {
 
             const fetchedBlock = await alchemy.core.getBlock(blockNumber);
             blockMap.set(blockNumber, fetchedBlock);
+            if(blockMap.size > 10) {
+                const keyArray = Array.from(blockMap.keys());
+                const keyToDelete = keyArray.sort((a, b) => a - b)[0];
+                blockMap.delete(keyToDelete);
+                transactionContext.delete(keyToDelete);
+            }
             setBlock(fetchedBlock);
         }
       
         getBlock();
-    }, [blockNumber, apiKey, network, blockMap]);
+    }, [blockNumber, apiKey, network, blockMap, transactionContext]);
 
     return block;
 }
