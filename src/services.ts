@@ -78,3 +78,24 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
 
     return transactions;
 }
+
+export function usePriceFeed(ticker: string) : number | null {
+    const {apiKey, network} = useContext(AlchemySettings);
+    const [price, setPrice] = useState<number | null>(null);
+
+    // todo eth price in eur from chainlink
+    // eth/usd 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+    // eur/usd 0xb49f677943BC038e9857d61E7d053CaA2C1734C1
+    // eth/eur = eth/usd / eur/usd
+
+    useEffect(() => {
+        //const alchemy = new Alchemy({apiKey, network});
+        async function getPrice() {
+            setPrice(0);
+        }
+      
+        getPrice();
+    }, [ticker, apiKey, network]);
+
+    return price;
+}
