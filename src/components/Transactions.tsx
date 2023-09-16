@@ -1,50 +1,74 @@
-import { Utils } from 'alchemy-sdk';
-import { useTransactions } from '../services';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { Utils } from "alchemy-sdk";
+import { useTransactions } from "../services";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { Skeleton } from "@mui/material";
+import { useState } from "react";
+import TransactionInfo from "./TransactionInfo";
 
-
-export default function Transactions({blockNumber}:{ blockNumber: number }) {
+export default function Transactions({ blockNumber }: { blockNumber: number }) {
   const transactions = useTransactions(blockNumber);
   //todo get eth - eur price from somewhere onchain and add on the table
+  const [selectedTransaction, setSelectedTransaction] = useState<string | null>(
+    null
+  );
 
-  const rows : GridRowsProp = transactions?.map((t, i) => {
+  function handleRowClick(params: any) {
+    setSelectedTransaction(params.row.id);
+  }
+
+  const rows: GridRowsProp = transactions?.map((t, i) => {
     const gasPrice = t.gasPrice ? t.gasPrice.toBigInt() : BigInt(0);
     const gasFee = t.gasLimit.toBigInt() * gasPrice;
 
-      return {
-        id: t.hash,
-        hash: t.hash,
-        from: t.from,
-        to: t.to,
-        value: Utils.formatEther(t.value.toString()).substring(0,7) + " ETH",
-        fee: Utils.formatEther(gasFee).substring(0,7) + " ETH",
-        gas: t.gasLimit,
-        gasPrice: t.gasPrice + " wei",
-        nonce: t.nonce
-      }
-    }) as GridRowsProp;
+    return {
+      id: t.hash,
+      hash: t.hash,
+      from: t.from,
+      to: t.to,
+      value: Utils.formatEther(t.value.toString()).substring(0, 7) + " ETH",
+      fee: Utils.formatEther(gasFee).substring(0, 7) + " ETH",
+      gas: t.gasLimit,
+      gasPrice: t.gasPrice + " wei",
+      nonce: t.nonce,
+    };
+  }) as GridRowsProp;
 
-    //todo fix the width of the columns
-  const columns : GridColDef[] = [
-    { field: 'from', headerName: 'From', width: 150 },
-    { field: 'to', headerName: 'To', width: 150 },
-    { field: 'value', headerName: 'Value sent', width: 250 },
-    { field: 'fee', headerName: 'Fee', width: 250 },
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "Tx hash", flex: 1 },
+    { field: "from", headerName: "From", width: 150, flex: 2 },
+    { field: "to", headerName: "To", width: 150, flex: 2 },
+    { field: "value", headerName: "Value sent", width: 250, flex: 1 },
+    { field: "fee", headerName: "Fee", width: 250, flex: 1 },
   ];
 
   return (
     <>
-      {rows ? // todo open modal on row click with transaction details
+      {!rows ? (
+        <Skeleton variant="rounded" height={369} />
+      ) : (
         <DataGrid
           rows={rows}
-          columns={columns} 
+          columns={columns}
           initialState={{
             pagination: { paginationModel: { pageSize: 5 } },
+            columns: { columnVisibilityModel: { id: false } },
           }}
           pageSizeOptions={[5, 10, 25]}
-        /> :
-        "Loading transactions..."
-      }
+          onRowClick={handleRowClick}
+          sx={{
+            "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+              outline: "none !important",
+            },
+          }}
+        />
+      )}
+      {selectedTransaction && transactions && (
+        <TransactionInfo
+          key={selectedTransaction}
+          transaction={transactions.find((t) => t.hash === selectedTransaction)}
+          onModalCLose={() => setSelectedTransaction(null)}
+        />
+      )}
     </>
   );
 }
