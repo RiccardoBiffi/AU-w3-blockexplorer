@@ -1,8 +1,8 @@
 import Card from "@mui/material/Card";
 import { CardContent, Typography, Skeleton } from "@mui/material";
 import styled from "@emotion/styled";
-import { useBlock } from "../services";
-import { Hash } from "./fields/Hash";
+import { useBlock } from "../../services";
+import { Hash } from "../fields/Hash";
 
 export default function BlockInfo({
   n,

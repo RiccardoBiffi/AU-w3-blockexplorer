@@ -1,5 +1,5 @@
 import { Utils } from "alchemy-sdk";
-import { useTransactions } from "../services";
+import { useTransactions } from "../../services";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { Skeleton } from "@mui/material";
 import { useState } from "react";
