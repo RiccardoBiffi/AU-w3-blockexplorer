@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
-import { AlchemySettings } from './contexts/AlchemySettings';
+import { AlchemySDKSettings } from './contexts/AlchemySettings';
 import { BlockContext } from './contexts/BlockContext';
 import { TransactionContext } from './contexts/TransactionContext';
 
 
 export function useLatestBlock(isRefresh: boolean) : [number | null, () => void] {
-    const {apiKey, network} = useContext(AlchemySettings);
+    const {apiKey, network} = useContext(AlchemySDKSettings);
     const [lastBlockNumber, setLastBlockNumber] = useState<number | null>(null);
     const [refresh, setRefresh] = useState<boolean>(isRefresh);
 
@@ -27,7 +27,7 @@ export function useLatestBlock(isRefresh: boolean) : [number | null, () => void]
 }
 
 export function useBlock(blockNumber: number) : Block | null {
-    const {apiKey, network} = useContext(AlchemySettings);
+    const {apiKey, network} = useContext(AlchemySDKSettings);
     const blockMap = useContext(BlockContext);
     const transactionContext = useContext(TransactionContext);
     const [block, setBlock] = useState<Block | null>(null);
@@ -57,7 +57,7 @@ export function useBlock(blockNumber: number) : Block | null {
 }
 
 export function useTransactions(blockNumber: number) : TransactionResponse[] | null {
-    const {apiKey, network} = useContext(AlchemySettings);
+    const {apiKey, network} = useContext(AlchemySDKSettings);
     const transactionContext = useContext(TransactionContext);
     const [transactions, setTransactions] = useState<TransactionResponse[] | null>(null);
 
@@ -77,25 +77,4 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
     }, [blockNumber, apiKey, network, transactionContext]);
 
     return transactions;
-}
-
-export function usePriceFeed(ticker: string) : number | null {
-    const {apiKey, network} = useContext(AlchemySettings);
-    const [price, setPrice] = useState<number | null>(null);
-
-    // todo eth price in eur from chainlink
-    // eth/usd 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
-    // eur/usd 0xb49f677943BC038e9857d61E7d053CaA2C1734C1
-    // eth/eur = eth/usd / eur/usd
-
-    useEffect(() => {
-        //const alchemy = new Alchemy({apiKey, network});
-        async function getPrice() {
-            setPrice(0);
-        }
-      
-        getPrice();
-    }, [ticker, apiKey, network]);
-
-    return price;
 }

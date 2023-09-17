@@ -41,7 +41,7 @@ function App() {
         />
       </h1>
       <p>Click on a block to see its transactions</p>
-      <BlockList latestBlock={latestBlock} number={blockNumber} />
+      <BlockList latestBlock={latestBlock} blocksNumber={blockNumber} />
     </Container>
   );
 }

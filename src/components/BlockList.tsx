@@ -7,10 +7,10 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function BlockList({
   latestBlock,
-  number,
+  blocksNumber,
 }: {
   latestBlock: number | null;
-  number: number;
+  blocksNumber: number;
 }) {
   const [selectedBlock, setSelectedBlock] = useState<number | null>(null);
 
@@ -18,7 +18,7 @@ export default function BlockList({
     setSelectedBlock(n);
   }
 
-  const blockListArray = new Array(number).fill(0).map((_, i) => {
+  const blockListArray = new Array(blocksNumber).fill(0).map((_, i) => {
     const block = latestBlock ? latestBlock - i : 0;
     return (
       <BlockInfo

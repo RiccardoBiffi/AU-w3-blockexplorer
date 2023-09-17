@@ -7,4 +7,4 @@ const settings = {
     network: Network.ETH_MAINNET,
   }
 
-export const AlchemySettings = createContext(settings);
+export const AlchemySDKSettings = createContext(settings);
