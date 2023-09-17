@@ -1,47 +1,59 @@
-import BlockList from "./components/BlockList";
-import { useLatestBlock } from "./services";
-import { Box, Container, Tab, Tabs } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { Box, Container, Tab, Tabs, Typography } from "@mui/material";
+import Latest from "./components/latest/Latest";
 
-import "./App.css";
-import styled from "@emotion/styled";
+interface TabPanelProps {
+  children?: React.ReactNode;
+  dir?: string;
+  index: number;
+  value: number;
+}
 
-// You can read more Alchemy SDK here:
-// https://docs.alchemy.com/reference/alchemy-sdk-api-surface-overview#api-surface
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
 function App() {
-  const [latestBlock, handleRefresh] = useLatestBlock(false);
-  const blockNumber = 10;
+  const [activeTab, setActiveTab] = useState(0);
 
-  const Icon = styled(FontAwesomeIcon)`
-    cursor: pointer;
-    transform: rotate(-90deg);
-    transition: transform 0.5s;
-
-    &:hover {
-      transform: rotate(90deg);
-  `;
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
 
   return (
     <Container maxWidth="lg">
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs aria-label="basic tabs example" centered>
-          <Tab label="Latest" value={0} />
-          <Tab label="Search" value={1} />
-          <Tab label="NFTs" value={2} />
+        <Tabs value={activeTab} onChange={handleChange} centered>
+          <Tab label="Latest" />
+          <Tab label="Search" />
+          <Tab label="NFTs" />
         </Tabs>
       </Box>
-      <h1>
-        Ethereum last {blockNumber} blocks&nbsp;
-        <Icon
-          title="Click to refresh"
-          onClick={handleRefresh}
-          icon={faRefresh}
-        />
-      </h1>
-      <p>Click on a block to see its transactions</p>
-      <BlockList latestBlock={latestBlock} blocksNumber={blockNumber} />
+      <TabPanel value={activeTab} index={0}>
+        <Latest />
+      </TabPanel>
+      <TabPanel value={activeTab} index={1}>
+        Search component
+      </TabPanel>
+      <TabPanel value={activeTab} index={2}>
+        NFT gallery component
+      </TabPanel>
     </Container>
   );
 }
