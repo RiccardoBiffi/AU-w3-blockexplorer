@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Box, Container, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Container, Tab, Tabs } from "@mui/material";
 import Latest from "./components/latest/Latest";
+import Search from "./components/search/Search";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -20,11 +21,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -49,7 +46,7 @@ function App() {
         <Latest />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        Search component
+        <Search />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
         NFT gallery component
