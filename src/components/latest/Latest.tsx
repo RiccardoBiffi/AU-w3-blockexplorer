@@ -8,6 +8,8 @@ export default function Latest() {
   const [latestBlock, handleRefresh] = useLatestBlock(false);
   const blockNumber = 10;
 
+  //bug the blocks are fixed to 0 when changing tab and going back
+
   const Icon = styled(FontAwesomeIcon)`
   cursor: pointer;
     transform: rotate(-90deg);

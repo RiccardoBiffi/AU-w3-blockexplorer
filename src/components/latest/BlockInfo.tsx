@@ -37,6 +37,8 @@ export default function BlockInfo({
     border-radius: 4px;
   `;
 
+  // bug <div> cannot appear as a descendant of <p>. <Typography> is a <p> and <Hash> is a <div>
+
   return (
     <>
       {!block ? (

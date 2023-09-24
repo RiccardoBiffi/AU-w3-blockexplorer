@@ -7,7 +7,6 @@ import TransactionInfo from "./TransactionInfo";
 
 export default function Transactions({ blockNumber }: { blockNumber: number }) {
   const transactions = useTransactions(blockNumber);
-  //todo get eth - eur price from somewhere onchain and add on the table
   const [selectedTransaction, setSelectedTransaction] = useState<string | null>(
     null
   );
