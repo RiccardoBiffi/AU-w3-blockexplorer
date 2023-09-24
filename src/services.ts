@@ -35,7 +35,7 @@ export function useBlock(blockNumber: number) : Block | null {
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getBlock() {
-            if (blockNumber === 0) return;
+            if (blockNumber < 0) return;
             if (blockMap.has(blockNumber))
                 return setBlock(blockMap.get(blockNumber) as Block);
 
@@ -64,7 +64,7 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getTransactions() {
-            if (blockNumber === 0) return;
+            if (blockNumber < 0) return;
             if (transactionContext.has(blockNumber))
                 return setTransactions(transactionContext.get(blockNumber) as TransactionResponse[]);
             
