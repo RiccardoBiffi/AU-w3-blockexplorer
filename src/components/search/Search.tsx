@@ -2,6 +2,8 @@ import { Box, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import BlockInfo from "../latest/BlockInfo";
 import Transactions from "../latest/Transactions";
+import Account from "./Account";
+import Transaction from "./Transaction";
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
@@ -49,7 +51,7 @@ export default function Search() {
           setSearch(searchText);
           setSearchItem(inferredSearchItem);
         }}
-        sx={{ maxWidth: 605 }}
+        sx={{ maxWidth: 636 }}
       />
 
       {search && searchItem === "block" ? (
@@ -64,11 +66,11 @@ export default function Search() {
           </Box>
         </>
       ) : searchItem === "address" ? (
-        "address"
+        <Account address={search}></Account>
       ) : searchItem === "transaction" ? (
-        "transaction"
+        <Transaction hash={search}></Transaction>
       ) : (
-        <p style={{ textAlign: "center" }}>Nothing to show here</p>
+        <p style={{ textAlign: "center" }}>Nothing to show here...yet!</p>
       )}
     </Stack>
   );
