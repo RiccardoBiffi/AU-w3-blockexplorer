@@ -35,7 +35,7 @@ export function useBlock(blockNumber: number) : Block | null {
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getBlock() {
-            if (blockNumber < 0) return;
+            if (blockNumber <= 0) return;
             if (blockMap.has(blockNumber))
                 return setBlock(blockMap.get(blockNumber) as Block);
 
@@ -64,7 +64,7 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getTransactions() {
-            if (blockNumber < 0) return;
+            if (blockNumber <= 0) return;
             if (transactionContext.has(blockNumber))
                 return setTransactions(transactionContext.get(blockNumber) as TransactionResponse[]);
             
@@ -77,4 +77,36 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
     }, [blockNumber, apiKey, network, transactionContext]);
 
     return transactions;
+}
+
+interface AccountInfo {
+    isContract: boolean;
+    balance: BigInt;
+    }
+
+export function useAccountInfo(address: string) : AccountInfo | undefined {
+    const {apiKey, network} = useContext(AlchemySDKSettings);
+    const [accountInfo, setAccountInfo] = useState<AccountInfo | undefined>(undefined);
+
+    useEffect(() => {
+        const alchemy = new Alchemy({apiKey, network});
+        async function getAccountBalance() {
+            let result : AccountInfo = {isContract: false, balance: BigInt(0)};
+
+            const isContract = await alchemy.core.isContractAddress(address);
+            if (isContract)
+                result.isContract = true;
+            
+            const accountBalance = (await alchemy.core.getBalance(address)).toBigInt();
+            result.balance = accountBalance;
+
+            //todo add getTokensForOwner
+
+            setAccountInfo(result);
+        }
+      
+        getAccountBalance();
+    }, [address, apiKey, network]);
+
+    return accountInfo;
 }
