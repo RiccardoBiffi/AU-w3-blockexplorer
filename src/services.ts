@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alchemy, Block, TransactionResponse } from 'alchemy-sdk';
+import { Alchemy, Block, OwnedToken, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySDKSettings } from './contexts/AlchemySettings';
 import { BlockContext } from './contexts/BlockContext';
 import { TransactionContext } from './contexts/TransactionContext';
@@ -101,6 +101,7 @@ export function useTransaction(hash: string) : TransactionResponse | null {
 interface AccountInfo {
     isContract: boolean;
     balance: BigInt;
+    tokens: OwnedToken[];
     }
 
 export function useAccountInfo(address: string) : AccountInfo | undefined {
@@ -110,16 +111,11 @@ export function useAccountInfo(address: string) : AccountInfo | undefined {
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
         async function getAccountBalance() {
-            let result : AccountInfo = {isContract: false, balance: BigInt(0)};
+            let result : AccountInfo = {isContract: false, balance: BigInt(0), tokens: []};
 
-            const isContract = await alchemy.core.isContractAddress(address);
-            if (isContract)
-                result.isContract = true;
-            
-            const accountBalance = (await alchemy.core.getBalance(address)).toBigInt();
-            result.balance = accountBalance;
-
-            //todo add getTokensForOwner
+            result.isContract = await alchemy.core.isContractAddress(address);
+            result.balance = (await alchemy.core.getBalance(address)).toBigInt();
+            result.tokens = (await alchemy.core.getTokensForOwner(address)).tokens;
 
             setAccountInfo(result);
         }
