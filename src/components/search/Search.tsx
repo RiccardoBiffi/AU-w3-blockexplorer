@@ -68,7 +68,13 @@ export default function Search() {
       ) : searchItem === "address" ? (
         <Account address={search}></Account>
       ) : searchItem === "transaction" ? (
-        <Transaction hash={search}></Transaction>
+        <Transaction
+          hash={search}
+          onClose={() => {
+            setSearchText("");
+            setSearchItem("");
+          }}
+        ></Transaction>
       ) : (
         <p style={{ textAlign: "center" }}>Nothing to show here...yet!</p>
       )}

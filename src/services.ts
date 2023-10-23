@@ -79,6 +79,25 @@ export function useTransactions(blockNumber: number) : TransactionResponse[] | n
     return transactions;
 }
 
+export function useTransaction(hash: string) : TransactionResponse | null {
+    const {apiKey, network} = useContext(AlchemySDKSettings);
+    const [transaction, setTransaction] = useState<TransactionResponse | null>(null);
+
+    useEffect(() => {
+        const alchemy = new Alchemy({apiKey, network});
+        async function getTransaction() {
+            if (!hash) return;
+                        
+            const fetchedTransaction = await alchemy.core.getTransaction(hash);
+            setTransaction(fetchedTransaction);
+        }
+      
+        getTransaction();
+    }, [hash, apiKey, network]);
+
+    return transaction;
+}
+
 interface AccountInfo {
     isContract: boolean;
     balance: BigInt;
