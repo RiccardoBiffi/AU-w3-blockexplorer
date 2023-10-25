@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import Latest from "./components/latest/Latest";
 import Search from "./components/search/Search";
+import SearchNFTs from "./components/nfts/SearchNFTs";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,7 +50,7 @@ function App() {
         <Search />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
-        NFT gallery component
+        <SearchNFTs />
       </TabPanel>
     </Container>
   );
