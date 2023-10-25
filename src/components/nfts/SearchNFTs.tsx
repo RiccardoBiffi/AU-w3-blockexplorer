@@ -30,6 +30,7 @@ export default function SearchNFTs() {
           Search NFTs by
         </FormLabel>
         <RadioGroup
+          row
           defaultValue="collection"
           value={radioValue}
           onChange={handleChange}
