@@ -1,17 +1,21 @@
-import { Grid } from "@mui/material";
+//import { Grid } from "@mui/material";
 
 interface NFTGalleryProps {
-  images: string[];
+  address: string;
+  type: string;
 }
 
-export default function NFTGallery({ images }: NFTGalleryProps) {
+export default function NFTGallery({ address, type }: NFTGalleryProps) {
   return (
-    <Grid container spacing={2}>
-      {images.map((image, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <img src={image} alt={`NFT ${index}`} />
-        </Grid>
-      ))}
-    </Grid>
+    <p>
+      Searching NFTs of {type} {address}
+    </p>
+    // <Grid container spacing={2}>
+    //   {/* {images.map((image, index) => (
+    //     <Grid item xs={12} sm={6} md={4} key={index}>
+    //       <img src={image} alt={`NFT ${index}`} />
+    //     </Grid>
+    //   ))} */}
+    // </Grid>
   );
 }

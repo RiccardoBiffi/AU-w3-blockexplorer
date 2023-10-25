@@ -8,16 +8,17 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import NFTGallery from "./NFTGallery";
 
 export default function SearchNFTs() {
   const [searchAddress, setSearchAddress] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
-  const [radioValue, setRadioValue] = useState<string | null>(null);
+  const [radioValue, setRadioValue] = useState<string>("collection");
   const addressRex = new RegExp("^0x[a-fA-F0-9]{40}$");
-  let isError = !addressRex.test(selectedAddress);
+  const isError = selectedAddress ? !addressRex.test(selectedAddress) : false;
 
   const handleChange = (event: {
-    target: { value: SetStateAction<string | null> };
+    target: { value: SetStateAction<string> };
   }) => {
     setRadioValue(event.target.value);
   };
@@ -71,6 +72,9 @@ export default function SearchNFTs() {
         }}
         sx={{ maxWidth: 636 }}
       />
+      {!isError && selectedAddress && (
+        <NFTGallery address={selectedAddress} type={radioValue} />
+      )}
     </Stack>
   );
 }
