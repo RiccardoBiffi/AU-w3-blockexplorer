@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alchemy, Block, OwnedToken, TransactionResponse } from 'alchemy-sdk';
+import { Alchemy, Block, Nft, NftMetadataBatchToken, OwnedNft, OwnedToken, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySDKSettings } from './contexts/AlchemySettings';
 import { BlockContext } from './contexts/BlockContext';
 import { TransactionContext } from './contexts/TransactionContext';
@@ -124,4 +124,42 @@ export function useAccountInfo(address: string) : AccountInfo | undefined {
     }, [address, apiKey, network]);
 
     return accountInfo;
+}
+
+export function useNFTs(address: string, type: string) : Nft[] | OwnedNft[] | undefined {
+    const {apiKey, network} = useContext(AlchemySDKSettings);
+    const [nfts, setNfts] = useState<Nft[] | OwnedNft[] | undefined>(undefined);
+
+    useEffect(() => {
+        const alchemy = new Alchemy({apiKey, network});
+
+        async function getOwnerNFTs() {
+            const ownedNfts = (await alchemy.nft.getNftsForOwner(address)).ownedNfts;
+            const batch = ownedNfts.map((nft) => {
+                return {
+                    contractAddress: nft.contract.address,
+                    tokenId: nft.tokenId,
+                    tokenType: nft.tokenType
+                };
+            }) as NftMetadataBatchToken[];
+            
+            if(batch.length === 0) return setNfts([]);
+
+            const result = await alchemy.nft.getNftMetadataBatch(batch);
+            setNfts(result);
+        }
+
+        async function getCollectionNFTs() {
+            const result = (await alchemy.nft.getNftsForContract(address)).nfts;
+
+            setNfts(result);
+        }
+      
+        if(type === "owner")
+            getOwnerNFTs();
+        if(type === "collection")
+            getCollectionNFTs();
+    }, [address, type, apiKey, network]);
+
+    return nfts;
 }
