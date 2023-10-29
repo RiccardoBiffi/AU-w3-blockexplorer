@@ -126,16 +126,29 @@ export function useAccountInfo(address: string) : AccountInfo | undefined {
     return accountInfo;
 }
 
-export function useNFTs(address: string, type: string) : Nft[] | OwnedNft[] | undefined {
+export function useNFTs(address: string, type: string) : Nft[] | undefined {
     const {apiKey, network} = useContext(AlchemySDKSettings);
-    const [nfts, setNfts] = useState<Nft[] | OwnedNft[] | undefined>(undefined);
+    const [nfts, setNfts] = useState<Nft[] | undefined>(undefined);
 
     useEffect(() => {
         const alchemy = new Alchemy({apiKey, network});
 
         async function getOwnerNFTs() {
-            const ownedNfts = (await alchemy.nft.getNftsForOwner(address)).ownedNfts;
-            const batch = ownedNfts.map((nft) => {
+            const ownedNFTs = (await alchemy.nft.getNftsForOwner(address)).ownedNfts;
+            const ntfs  = await getNftMetadataBatch(ownedNFTs);
+            setNfts(ntfs);
+        }
+
+        async function getCollectionNFTs() {
+            const collectionNFTs = (await alchemy.nft.getNftsForContract(address)).nfts;
+            const ntfs  = await getNftMetadataBatch(collectionNFTs);
+            setNfts(ntfs);
+        }
+      
+        async function getNftMetadataBatch(nfts: Nft[]) {
+            if (nfts.length === 0) return [];
+
+            const batch = nfts.map((nft) => {
                 return {
                     contractAddress: nft.contract.address,
                     tokenId: nft.tokenId,
@@ -143,22 +156,10 @@ export function useNFTs(address: string, type: string) : Nft[] | OwnedNft[] | un
                 };
             }) as NftMetadataBatchToken[];
             
-            if(batch.length === 0) return setNfts([]);
-
-            const result = await alchemy.nft.getNftMetadataBatch(batch);
-            setNfts(result);
+            return await alchemy.nft.getNftMetadataBatch(batch);
         }
 
-        async function getCollectionNFTs() {
-            const result = (await alchemy.nft.getNftsForContract(address)).nfts;
-
-            setNfts(result);
-        }
-      
-        if(type === "owner")
-            getOwnerNFTs();
-        if(type === "collection")
-            getCollectionNFTs();
+        (type === "owner") ? getOwnerNFTs() : getCollectionNFTs();
     }, [address, type, apiKey, network]);
 
     return nfts;
