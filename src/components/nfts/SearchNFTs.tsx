@@ -38,7 +38,7 @@ export default function SearchNFTs() {
           <FormControlLabel
             value="collection"
             control={<Radio />}
-            label="NFT collection address"
+            label="Collection address"
           />
           <FormControlLabel
             value="owner"
@@ -49,7 +49,7 @@ export default function SearchNFTs() {
       </FormControl>
       <TextField
         id="outlined-search"
-        label="🖼️ Search NFTs"
+        label={"🖼️ Search NFTs by " + radioValue}
         type="search"
         placeholder={
           radioValue === "collection" ? "Collection address" : "Owner address"
@@ -58,8 +58,8 @@ export default function SearchNFTs() {
           isError
             ? "Unknown search term, are you sure you have copied the the whole address?"
             : radioValue === "collection"
-            ? "The address of the NFT collection"
-            : "The address of which you want to see the NFTs"
+            ? "Enter the address of the NFT collection you want to explore"
+            : "Enter the address for which you want to see the owned NFTs"
         }
         fullWidth
         value={searchAddress}
