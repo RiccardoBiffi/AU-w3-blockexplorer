@@ -13,6 +13,7 @@ export default function NFTGallery({ address, type }: NFTGalleryProps) {
   return (
     <>
       {!nfts ? (
+        // todo add a better skeleton to mimik the gallery
         <Skeleton variant="rounded" height={369} sx={{ width: "100%" }} />
       ) : nfts.length > 0 ? (
         <Grid

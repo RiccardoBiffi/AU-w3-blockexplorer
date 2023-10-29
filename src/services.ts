@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alchemy, Block, Nft, NftMetadataBatchToken, OwnedNft, OwnedToken, TransactionResponse } from 'alchemy-sdk';
+import { Alchemy, Block, Nft, NftMetadataBatchToken, OwnedToken, TransactionResponse } from 'alchemy-sdk';
 import { AlchemySDKSettings } from './contexts/AlchemySettings';
 import { BlockContext } from './contexts/BlockContext';
 import { TransactionContext } from './contexts/TransactionContext';
