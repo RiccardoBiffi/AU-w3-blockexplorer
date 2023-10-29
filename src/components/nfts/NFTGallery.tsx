@@ -1,5 +1,6 @@
 import { Grid, Skeleton } from "@mui/material";
 import { useNFTs } from "../../services";
+import NFTCard from "./NFTCard";
 
 interface NFTGalleryProps {
   address: string;
@@ -14,10 +15,17 @@ export default function NFTGallery({ address, type }: NFTGalleryProps) {
       {!nfts ? (
         <Skeleton variant="rounded" height={369} sx={{ width: "100%" }} />
       ) : nfts.length > 0 ? (
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={5}
+          justifyContent={"center"}
+          alignItems={"center"}
+          alignContent={"center"}
+          alignSelf={"center"}
+        >
           {nfts.map((nft, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <img src={nft.media[0]?.thumbnail} alt={`NFT ${index}`} />
+              <NFTCard nft={nft} />
             </Grid>
           ))}
         </Grid>
