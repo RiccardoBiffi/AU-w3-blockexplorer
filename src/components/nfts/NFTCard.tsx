@@ -32,15 +32,10 @@ export default function NFTCard({ nft }: { nft: Nft }) {
           alt={nft.contract.name + " " + nft.tokenId}
           onClick={() => handleClick()}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent sx={{ padding: "16px !important" }}>
+          <Typography gutterBottom variant="h5" component="span">
             {nft.contract.name + " #" + nft.tokenId}
           </Typography>
-          {nft.description && (
-            <Typography variant="body2" color="text.secondary">
-              {nft.description}
-            </Typography>
-          )}
         </CardContent>
       </NftCard>
       {open && <NFTDetails nft={nft} onModalCLose={() => setOpen(false)} />}
