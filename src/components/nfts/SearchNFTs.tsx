@@ -74,7 +74,11 @@ export default function SearchNFTs() {
         sx={{ maxWidth: 636 }}
       />
       {!isError && selectedAddress && (
-        <NFTGallery address={selectedAddress} type={radioValue} />
+        <NFTGallery
+          address={selectedAddress}
+          type={radioValue}
+          key={selectedAddress + radioValue}
+        />
       )}
     </Stack>
   );
