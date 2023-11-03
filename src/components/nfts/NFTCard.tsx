@@ -10,6 +10,7 @@ export default function NFTCard({ nft }: { nft: Nft }) {
   const NftCard = styled(Card)`
     cursor: pointer;
     text-align: center;
+    border: 1px solid gray;
 
     &:hover {
       box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
@@ -27,12 +28,14 @@ export default function NFTCard({ nft }: { nft: Nft }) {
       <NftCard>
         <CardMedia
           component="img"
-          height="auto"
+          height="300"
           image={nft.media[0]?.thumbnail}
           alt={nft.contract.name + " " + nft.tokenId}
           onClick={() => handleClick()}
         />
-        <CardContent sx={{ padding: "16px !important" }}>
+        <CardContent
+          sx={{ padding: "16px !important", borderTop: "1px solid gray;" }}
+        >
           <Typography gutterBottom variant="h5" component="span">
             {nft.contract.name + " #" + nft.tokenId}
           </Typography>
